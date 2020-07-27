@@ -1,0 +1,2 @@
+# Exclude all third party projects from clang-format checks
+3rd_parties/
