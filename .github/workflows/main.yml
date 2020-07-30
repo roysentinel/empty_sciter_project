@@ -1,0 +1,74 @@
+name: CI
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  coding-conventions:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: DoozyX/clang-format-lint-action@v0.5
+      with:
+        source: '.'
+        extensions: 'h,cpp'
+        clangFormatVersion: 9
+
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        name: [
+          windows,
+          macOS,
+        ]
+
+        include:
+          - name: windows
+            os: windows-2019
+            compiler: cl
+
+          - name: macOS
+            os: macOS-10.15
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    - name: Fetch submodules before building
+      run: git submodule update --init --recursive --depth 1
+    - name: Create a build directory and get inside it
+      run: mkdir build
+    - name: Create build configuration
+      run: cmake -DCMAKE_BUILD_TYPE=Release ..
+      working-directory: build
+    - name: Build the project on macOS
+      if: startsWith(matrix.os,'macOS')
+      run: make
+      working-directory: build
+    - name: Setup MSBuild.exe
+      if: startsWith(matrix.os,'windows')
+      uses: warrenbuckley/Setup-MSBuild@v1
+    - name: Build the project on Windows
+      if: startsWith(matrix.os,'windows')
+      run: MSBuild.exe appname.sln /property:Configuration=Release
+      working-directory: build
+    - uses: actions/upload-artifact@v2
+      if: startsWith(matrix.os,'macOS')
+      with:
+        name: macOS Excutable
+        path: build/appname
+    - uses: actions/upload-artifact@v2
+      if: startsWith(matrix.os,'windows')
+      with:
+        name: Windows Executable
+        path: build/Release/appname.exe
