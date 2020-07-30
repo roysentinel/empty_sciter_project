@@ -43,7 +43,3 @@ endif ()
 # Shared library build definitions
 #
 set(SOURCE_FILES ${WINDOW_MAIN_FILE})
-
-if ( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
-    target_link_libraries(SentinelOneAgentUI "-framework Foundation -framework Cocoa")
-endif ()
