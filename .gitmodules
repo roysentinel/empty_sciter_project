@@ -1,3 +1,3 @@
 [submodule "3rd_parties"]
-	path = 3rd_parties
+	path = 3rd_parties/sciter-sdk
 	url = https://github.com/c-smile/sciter-sdk.git
