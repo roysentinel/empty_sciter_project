@@ -28,6 +28,10 @@ if ( CMAKE_SYSTEM_NAME MATCHES "Linux" )
     set(WINDOW_MAIN_FILE 3rd_parties/sciter-sdk/include/sciter-gtk-main.cpp)
     execute_process(COMMAND 3rd_parties/sciter-sdk/bin.lnx/packfolder src/web include/resources.h -v "resources"
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+    FIND_PACKAGE ( PkgConfig REQUIRED )
+    PKG_CHECK_MODULES( GTK REQUIRED gtk+-3.0 )
+    INCLUDE_DIRECTORIES ( ${GTK_INCLUDE_DIRS} )    
 endif ()
 
 #
@@ -56,4 +60,9 @@ add_executable(AppName ${SOURCE_FILES})
 # macOS applications need to link against Cocoa and Foundation
 if ( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
     target_link_libraries(AppName "-framework Foundation -framework Cocoa")
+endif ()
+
+# Linux applications need to link against GTK
+if ( CMAKE_SYSTEM_NAME MATCHES "Linux" )
+    target_link_libraries(AppName ${GTK_LIBRARIES} ${CMAKE_DL_LIBS})
 endif ()
