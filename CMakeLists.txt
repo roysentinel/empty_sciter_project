@@ -40,6 +40,20 @@ if ( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
 endif ()
 
 #
-# Shared library build definitions
+# Source code list of files to compile
 #
-set(SOURCE_FILES ${WINDOW_MAIN_FILE})
+set(SOURCE_FILES src/main_window.cpp
+                 src/main.cpp
+                 ${WINDOW_MAIN_FILE})
+
+
+add_executable(AppName ${SOURCE_FILES})
+
+#
+# Post compilation (linkage) specializations
+#
+
+# macOS applications need to link against Cocoa and Foundation
+if ( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
+    target_link_libraries(AppName "-framework Foundation -framework Cocoa")
+endif ()
