@@ -60,15 +60,15 @@ jobs:
       uses: warrenbuckley/Setup-MSBuild@v1
     - name: Build the project on Windows
       if: startsWith(matrix.os,'windows')
-      run: MSBuild.exe appname.sln /property:Configuration=Release
+      run: MSBuild.exe app_name.sln /property:Configuration=Release
       working-directory: build
     - uses: actions/upload-artifact@v2
       if: startsWith(matrix.os,'macOS')
       with:
         name: macOS Excutable
-        path: build/appname
+        path: build/AppName
     - uses: actions/upload-artifact@v2
       if: startsWith(matrix.os,'windows')
       with:
         name: Windows Executable
-        path: build/Release/appname.exe
+        path: build/Release/app_name.exe
