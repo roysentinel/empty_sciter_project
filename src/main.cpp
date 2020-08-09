@@ -14,7 +14,7 @@ int uimain(std::function<int()> run)
 
     sciter::om::hasset<main_window> window = new main_window();
 
-    window->load(WSTR("this://src/web/main.htm"));
+    window->load(WSTR("this://app/main.htm"));
 
     window->expand();
 

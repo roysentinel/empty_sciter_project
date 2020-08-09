@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Sciter Empty Application</title>
+        <script type="text/tiscript">
+            $(#Run_Callbacks).on("click", function() {
+                $(no-param).text = view.no_params_callback();
+                $(with-param).text = view.single_param_callback(5);
+            });
+        </script>
+    </head>
+    <body>
+        <p>Welcome to sciter empty application project</p>
+        <button #Run_Callbacks>Run Callbacks</button>
+        <br />
+        <no-param></no-param>
+        <br />
+        <with-param></with-param>
+    </body>
+</html>
